@@ -1,0 +1,37 @@
+import pandas as pd
+import yfinance as yf
+import numpy as np
+tickers1 = ['AAPL', 'GOOG', 'AMZN', 'TSLA', 'MSFT']
+tickers2 = ['^GSPC', '^IXIC', '^DJI', '^RUT', '^VIX']
+start_date = '2010-01-01'
+end_date = '2023-05-01'
+
+data = yf.download(tickers1, start=start_date, end=end_date)
+
+returns = data['Adj Close'].pct_change()
+cumulative_returns = (1 + returns).cumprod() - 1
+volatility = returns.std() * np.sqrt(252)
+sharpe_ratio = returns.mean() / volatility
+sortino_ratio = returns.mean() / returns[returns < 0].std()
+max_drawdown = (1 - cumulative_returns / (1 + cumulative_returns)).max()
+
+print('Cumulative Returns:\n', cumulative_returns.tail(), '\n')
+print('Volatility:\n', volatility.tail(), '\n')
+print('Sharpe Ratio:\n', sharpe_ratio.tail(), '\n')
+print('Sortino Ratio:\n', sortino_ratio.tail(), '\n')
+print('Max Drawdown:\n', max_drawdown.tail(), '\n')
+
+data = yf.download(tickers2, start=start_date, end=end_date)
+
+returns = data['Adj Close'].pct_change()
+cumulative_returns = (1 + returns).cumprod() - 1
+volatility = returns.std() * np.sqrt(252)
+sharpe_ratio = returns.mean() / volatility
+sortino_ratio = returns.mean() / returns[returns < 0].std()
+max_drawdown = (1 - cumulative_returns / (1 + cumulative_returns)).max()
+
+print('Cumulative Returns:\n', cumulative_returns.tail(), '\n')
+print('Volatility:\n', volatility.tail(), '\n')
+print('Sharpe Ratio:\n', sharpe_ratio.tail(), '\n')
+print('Sortino Ratio:\n', sortino_ratio.tail(), '\n')
+print('Max Drawdown:\n', max_drawdown.tail(), '\n')
